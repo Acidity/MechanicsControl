@@ -100,4 +100,4 @@ XP:
   #  VILLAGER: 
   
   # Prevent mobs from mob spawners from dropping XP.
-  MobSpawnerBlock: true
+  MobSpawnerBlock: false
