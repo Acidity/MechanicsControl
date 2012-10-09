@@ -1,32 +1,32 @@
 Enchants:
     
     # Set to true if you want CM to block certain enchants.
-    BlockEnchants: false
+    BlockEnchants: true
     
     # Blocks all levels of the given enchant specified.
     # 6 = All levels blocked, 0 = No levels blocked
     # List of viable enchants:
     # http://jd.bukkit.org/apidocs/org/bukkit/enchantments/Enchantment.html
     
-    ARROW_DAMAGE: [1,2,3,4,5]
-    ARROW_FIRE: [1,2,3,4,5]
-    ARROW_INFINITE: [1,2,3,4,5]
-    ARROW_KNOCKBACK: [1,2,3,4,5]
-    DAMAGE_ALL: [1,2,3,4,5]
+    ARROW_DAMAGE: [2,3,4,5]
+    ARROW_FIRE: [2,3,4,5]
+    ARROW_INFINITE: [2,3,4,5]
+    ARROW_KNOCKBACK: [2,3,4,5]
+    DAMAGE_ALL: [2,3,4,5]
     DAMAGE_ARTHROPODS: 0
     DAMAGE_UNDEAD: 0
     DIG_SPEED: 0
     DURABILITY: 0
-    FIRE_ASPECT: [1,2,3,4,5]
-    KNOCKBACK: [1,2,3,4,5]
+    FIRE_ASPECT: [2,3,4,5]
+    KNOCKBACK: [2,3,4,5]
     LOOT_BONUS_BLOCKS: 0
     LOOT_BONUS_MOBS: 0
     OXYGEN: 0
-    PROTECTION_ENVIRONMENTAL: [1,2,3,4,5]
-    PROTECTION_EXPLOSIONS: [1,2,3,4,5]
-    PROTECTION_FALL: [1,2,3,4,5]
-    PROTECTION_FIRE: [1,2,3,4,5]
-    PROTECTION_PROJECTILE: [1,2,3,4,5]
+    PROTECTION_ENVIRONMENTAL: [2,3,4,5]
+    PROTECTION_EXPLOSIONS: [2,3,4,5]
+    PROTECTION_FALL: [2,3,4,5]
+    PROTECTION_FIRE: [2,3,4,5]
+    PROTECTION_PROJECTILE: [2,3,4,5]
     SILK_TOUCH: 0
     WATER_WORKER: 0
     

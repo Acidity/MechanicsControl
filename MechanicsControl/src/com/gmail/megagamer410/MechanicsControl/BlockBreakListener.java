@@ -30,7 +30,7 @@ public class BlockBreakListener implements Listener
 	 * Necessary to get the server on static methods.
 	 */
 	
-	static MechanicsControl Plugin;
+	MechanicsControl plugin;
 	
 	/**
 	 * Passes the ChaosMod instance for static methods.
@@ -39,21 +39,25 @@ public class BlockBreakListener implements Listener
 	
 	public BlockBreakListener(MechanicsControl plugin) 
 	{
-		Plugin = plugin;
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event)
 	{
-		if(Plugin.getConfig().getConfigurationSection("XP").getKeys(false).contains(event.getBlock().getType().toString()))
+		//If the block is not in the config, return
+		if (!plugin.getConfig().getConfigurationSection("XP").getKeys(false).contains(event.getBlock().getType().toString())) {
+			return;
+		}
+		//If the amount of XP matches the bukkit default return
+		if (plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()) == event.getExpToDrop())
 		{
-			if(Plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()) != event.getExpToDrop())
-			{
-				if(event.getExpToDrop() != 0 || Plugin.getConfig().getBoolean("XP."+event.getBlock().getType().toString()+"FORCE",false))
-				{
-					event.setExpToDrop(Plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()));
-				}
-			}
+			return;
+		}
+		//If XP is supposed to drop OR if the config specifies it should always apply
+		if (event.getExpToDrop() != 0 || plugin.getConfig().getBoolean("XP."+event.getBlock().getType().toString()+"FORCE",false))
+		{
+			event.setExpToDrop(plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()));
 		}
 	}
 }
