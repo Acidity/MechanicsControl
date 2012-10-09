@@ -24,13 +24,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class EntityDeathListener implements Listener 
-{
+public class EntityDeathListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
 	
-	MechanicsControl Plugin;
+	private MechanicsControl plugin;
 	
 	/**
 	 * Passes the EnchantBlock instance for static methods.
@@ -39,28 +38,29 @@ public class EntityDeathListener implements Listener
 	
 	public EntityDeathListener(MechanicsControl plugin)
 	{
-		Plugin = plugin;
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
-	public void onEntityDeath(EntityDeathEvent event)
-	{
-		if(Plugin.getConfig().getConfigurationSection("XP").getKeys(false).contains(event.getEntityType().toString()))
-		{
-			if(Plugin.getConfig().getInt("XP."+ event.getEntityType().toString()) != event.getDroppedExp())
-			{
-				if(event.getDroppedExp() != 0 || Plugin.getConfig().getBoolean("XP."+event.getEntityType().toString()+"FORCE",false))
-				{
-					event.setDroppedExp(Plugin.getConfig().getInt("XP."+ event.getEntityType().toString()));
-				}
-			}
+	public void onEntityDeath(EntityDeathEvent event) {
+		//If the config doesn't mention this entity, do nothing
+		if(!plugin.getConfig().getConfigurationSection("XP").getKeys(false).contains(event.getEntityType().toString())) {
+			return;
 		}
-		if(Plugin.getConfig().getBoolean("XP.MobSpawnerBlock"))
-		{
-			if(Plugin.spawnerMap.containsKey(event.getEntity().getUniqueId()))
-			{
+		//If the config says to drop the same amount of XP as default Bukkit, do nothing
+		if(plugin.getConfig().getInt("XP."+ event.getEntityType().toString()) == event.getDroppedExp()) {
+			return;
+		}
+		//If XP doesn't equal 0 or if they specified it to force, then override default XP
+		if(event.getDroppedExp() != 0 || plugin.getConfig().getBoolean("XP."+event.getEntityType().toString()+"FORCE",false)) {
+			event.setDroppedExp(plugin.getConfig().getInt("XP."+ event.getEntityType().toString()));
+		}
+		//If the config doesn't say to check for spawned by mob spawner, stop
+		if(plugin.getConfig().getBoolean("XP.MobSpawnerBlock")) {
+			//If the mob was spawned by mob spawner, don't drop XP
+			if(plugin.spawnerMap.containsKey(event.getEntity().getUniqueId())) {
 				event.setDroppedExp(0);
-				Plugin.spawnerMap.remove(event.getEntity().getUniqueId());
+				plugin.spawnerMap.remove(event.getEntity().getUniqueId());
 			}
 		}
 	}

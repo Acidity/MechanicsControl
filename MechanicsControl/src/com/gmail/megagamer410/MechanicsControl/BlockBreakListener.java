@@ -24,39 +24,34 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class BlockBreakListener implements Listener 
-{
+public class BlockBreakListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
 	
-	MechanicsControl plugin;
+	private MechanicsControl plugin;
 	
 	/**
 	 * Passes the ChaosMod instance for static methods.
 	 * @param plugin ChaosMod plugin being passed in.
 	 */
 	
-	public BlockBreakListener(MechanicsControl plugin) 
-	{
+	public BlockBreakListener(MechanicsControl plugin) {
 		this.plugin = plugin;
 	}
 	
 	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event)
-	{
+	public void onBlockBreak(BlockBreakEvent event) {
 		//If the block is not in the config, return
 		if (!plugin.getConfig().getConfigurationSection("XP").getKeys(false).contains(event.getBlock().getType().toString())) {
 			return;
 		}
 		//If the amount of XP matches the bukkit default return
-		if (plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()) == event.getExpToDrop())
-		{
+		if (plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()) == event.getExpToDrop()) {
 			return;
 		}
 		//If XP is supposed to drop OR if the config specifies it should always apply
-		if (event.getExpToDrop() != 0 || plugin.getConfig().getBoolean("XP."+event.getBlock().getType().toString()+"FORCE",false))
-		{
+		if (event.getExpToDrop() != 0 || plugin.getConfig().getBoolean("XP."+event.getBlock().getType().toString()+"FORCE",false)) {
 			event.setExpToDrop(plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()));
 		}
 	}

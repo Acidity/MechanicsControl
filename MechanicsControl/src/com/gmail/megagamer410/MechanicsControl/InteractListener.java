@@ -23,96 +23,64 @@ package com.gmail.megagamer410.MechanicsControl;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 
-public class InteractListener implements Listener 
-{
+public class InteractListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
 	
-	static MechanicsControl Plugin;
+	private MechanicsControl plugin;
 	
 	/**
 	 * Passes the MechanicsControl instance for static methods.
 	 * @param plugin MechanicsControl plugin being passed in.
 	 */
 	
-	public InteractListener(MechanicsControl plugin) 
-	{
-		Plugin = plugin;
+	public InteractListener(MechanicsControl plugin) {
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event)
-	{
+	public void onPlayerInteract(PlayerInteractEvent event) {
 		final PlayerInteractEvent Event = event;
-		if(event.getAction().name().equalsIgnoreCase("RIGHT_CLICK_AIR"))
-		{
-			if(event.hasItem())
-			{
-				if(event.getItem() != null)
-				{
-					if(event.getItem().getType() == Material.POTION)
-					{
-						Plugin.getServer().getScheduler().scheduleSyncDelayedTask(Plugin, new Runnable() 
-						{
-							public void run() 
-							{
-								if(Event.getPlayer().getActivePotionEffects() != null)
-								{
-									PotionEffect[] potions = new PotionEffect[10];
-									potions = Event.getPlayer().getActivePotionEffects().toArray(potions);
-									if(Event.getPlayer().getActivePotionEffects().size() > 0)
-									{
-										for(int x = 0; x < Event.getPlayer().getActivePotionEffects().size(); x++)
-										{
-											if(Plugin.getConfig().getBoolean("Potions."+potions[x].getType().getName()))
-											{
-												Event.getPlayer().removePotionEffect(potions[x].getType());
-											}
-										}
-									}
-								}
-							}
-						}, 40);
+		
+		//If not right clicking air, do nothing
+		if(!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			return;
+		}
+		//If the event doesn't involve an item
+		if(!event.hasItem()) {
+			return;
+		}
+		//If the item is null
+		if(event.getItem() == null) {
+			return;
+		}
+		//If the item isn't a potion
+		if(event.getItem().getType() != Material.POTION) {
+			return;
+		}
+		//Removes the potion effects
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				//If the player currently has potion effects
+				if(Event.getPlayer().getActivePotionEffects() == null) {
+					return;
+				}
+				//If the player has less than or eqaul to 0 potion effects
+				if(Event.getPlayer().getActivePotionEffects().size() <= 0) {
+					return;
+				}
+				
+				for(PotionEffect x : Event.getPlayer().getActivePotionEffects()) {
+					if(plugin.getConfig().getBoolean("Potions." + x.getType().getName())) {
+						Event.getPlayer().removePotionEffect(x.getType());
 					}
 				}
 			}
-		}
-		if(event.getAction().name().equalsIgnoreCase("RIGHT_CLICK_BLOCK"))
-		{
-			if(event.hasItem())
-			{
-				if(event.getItem() != null)
-				{
-					if(event.getItem().getType() == Material.POTION)
-					{
-						Plugin.getServer().getScheduler().scheduleSyncDelayedTask(Plugin, new Runnable() 
-						{
-							public void run() 
-							{
-								if(Event.getPlayer().getActivePotionEffects() != null)
-								{
-									PotionEffect[] potions = new PotionEffect[10];
-									potions = Event.getPlayer().getActivePotionEffects().toArray(potions);
-									if(Event.getPlayer().getActivePotionEffects().size() > 0)
-									{
-										for(int x = 0; x < Event.getPlayer().getActivePotionEffects().size(); x++)
-										{
-											if(Plugin.getConfig().getBoolean("Potions."+potions[x].getType().getName()))
-											{
-												Event.getPlayer().removePotionEffect(potions[x].getType());
-											}
-										}
-									}
-								}
-							}
-						}, 40);
-					}
-				}
-			}
-		}
+		}, 40);
 	}
 }

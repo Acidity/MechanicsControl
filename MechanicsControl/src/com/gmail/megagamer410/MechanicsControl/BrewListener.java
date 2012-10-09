@@ -20,45 +20,45 @@
 
 package com.gmail.megagamer410.MechanicsControl;
 
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.BrewEvent;
 
-public class BrewListener implements Listener 
-{
+public class BrewListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
-	
-	MechanicsControl Plugin;
-	
+
+	private MechanicsControl plugin;
+
 	/**
 	 * Passes the MechanicsControl instance for static methods.
+	 * 
 	 * @param plugin MechanicsControl plugin being passed in.
 	 */
-	
-	public BrewListener(MechanicsControl plugin)
-	{
-		Plugin = plugin;
+
+	public BrewListener(MechanicsControl plugin) {
+		this.plugin = plugin;
 	}
-	
+
 	@EventHandler
-	public void onPotionBrew(BrewEvent event)
-	{
-		if(Plugin.getConfig().getBoolean("Potions.BlockBrewing"))
-		{
-			if(Plugin.getConfig().getBoolean("Potions."+event.getContents().getIngredient().getType().name()))
-			{
-				event.setCancelled(true);
-				if(event.getContents().getViewers() != null)
-				{
-					for(int x = 0; x < event.getContents().getViewers().size(); x++)
-					{
-						((Player)event.getContents().getViewers().get(x)).sendMessage("This ingredient has been blocked by your server admin.");
-					}
-					
-				}
+	public void onPotionBrew(BrewEvent event) {
+		// If the config says not to block potions, don't do anything.
+		if (!plugin.getConfig().getBoolean("Potions.BlockBrewing")) {
+			return;
+		}
+		// If the config says not to block this potion, don't do anything.
+		if (!plugin.getConfig().getBoolean("Potions." + event.getContents().getIngredient().getType().name())) {
+			return;
+		}
+
+		event.setCancelled(true);
+		// Tells everyone looking at the breqing stand that the admin blocked this potion.
+		if (event.getContents().getViewers() != null) {
+			for (HumanEntity x : event.getContents().getViewers()) {
+				((Player) x).sendMessage("This ingredient has been blocked by your server admin.");
 			}
 		}
 	}

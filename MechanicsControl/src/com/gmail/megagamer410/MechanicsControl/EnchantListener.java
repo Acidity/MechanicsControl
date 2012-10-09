@@ -25,50 +25,37 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 
-public class EnchantListener implements Listener 
-{
+public class EnchantListener implements Listener {
 
 	/**
 	 * Necessary to get the server on static methods.
 	 */
 	
-	MechanicsControl Plugin;
+	private MechanicsControl plugin;
 	
 	/**
 	 * Passes the MechanicsControl instance for static methods.
 	 * @param plugin MechanicsControl plugin being passed in.
 	 */
 	
-	public EnchantListener(MechanicsControl plugin)
-	{
-		Plugin = plugin;
+	public EnchantListener(MechanicsControl plugin) {
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
-	public void onEnchant(EnchantItemEvent event)
-	{
-		//Holds the enchants that the server assigned
-		Enchantment[] enchantArray = new Enchantment[5];
-		
+	public void onEnchant(EnchantItemEvent event) {
 		//Makes sure that the blocking enchants has been enabled in the config.
-		if(Plugin.getConfig().getBoolean("Enchants.BlockEnchants"))
-		{
-			//Gets the list of enchant names
-			enchantArray = event.getEnchantsToAdd().keySet().toArray(enchantArray);
-			
-			//Number of enchants assigned
-			int size = event.getEnchantsToAdd().size();
-			
-			//Checks all assigned enchants for being blocked and removes them as necessary
-			for(int x = 0; x < size; x++)
-			{
-				if(Plugin.getConfig().getIntegerList("Enchants." + enchantArray[x].getName()).contains(event.getEnchantsToAdd().get(enchantArray[x])))
-				{
-					event.getEnchantsToAdd().remove(enchantArray[x]);
-					if(event.getEnchantsToAdd().size() == 0)
-					{
-						event.setCancelled(true);
-					}
+		if(!plugin.getConfig().getBoolean("Enchants.BlockEnchants")) {
+			return;
+		}
+		
+		//Checks all assigned enchants for being blocked and removes them as necessary
+		for(Enchantment x : event.getEnchantsToAdd().keySet()) {
+			if(plugin.getConfig().getIntegerList("Enchants." + x.getName()).contains(event.getEnchantsToAdd().get(x))) {
+				event.getEnchantsToAdd().remove(x);
+				//If there are no allowed enchantments, cancel the event so the palyer doesn't lose levels
+				if(event.getEnchantsToAdd().size() == 0) {
+					event.setCancelled(true);
 				}
 			}
 		}

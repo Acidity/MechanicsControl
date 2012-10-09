@@ -22,20 +22,15 @@ package com.gmail.megagamer410.MechanicsControl;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MechanicsControl extends JavaPlugin
-{
-	static Logger log;
+public class MechanicsControl extends JavaPlugin {
 	public ConcurrentHashMap<UUID, Boolean> spawnerMap = new ConcurrentHashMap<UUID, Boolean>();
 	
-	public void onEnable()
-	{
-		log = this.getLogger();
-		log.info("Enabling EnchantBlock");
-		this.saveDefaultConfig();
+	public void onEnable() {
+		getLogger().info("Enabling EnchantBlock");
+		saveDefaultConfig();
 		getServer().getPluginManager().registerEvents(new EnchantListener(this), this);
 		getServer().getPluginManager().registerEvents(new BrewListener(this), this);
 		getServer().getPluginManager().registerEvents(new InteractListener(this), this);
@@ -45,8 +40,7 @@ public class MechanicsControl extends JavaPlugin
 		getServer().getPluginManager().registerEvents(new CreatureSpawnListener(this), this);
 	}
 	
-	public void onDisable()
-	{
-		log.info("Disabling EnchantBlock");
+	public void onDisable() {
+		getLogger().info("Disabling EnchantBlock");
 	}
 }

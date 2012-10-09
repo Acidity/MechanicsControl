@@ -24,30 +24,27 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
-public class CreatureSpawnListener implements Listener 
-{
+public class CreatureSpawnListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
 	
-	MechanicsControl Plugin;
+	private MechanicsControl plugin;
 	
 	/**
 	 * Passes the MechanicsControl instance for static methods.
 	 * @param plugin MechanicsControl plugin being passed in.
 	 */
 	
-	public CreatureSpawnListener(MechanicsControl plugin)
-	{
-		Plugin = plugin;
+	public CreatureSpawnListener(MechanicsControl plugin) {
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
-	public void onCreatureSpawn(CreatureSpawnEvent event)
-	{
-		if(event.getSpawnReason().toString().equalsIgnoreCase("SPAWNER"))
-		{
-			Plugin.spawnerMap.put(event.getEntity().getUniqueId(), true);
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
+		// If the mob was spawned by a mob spawner, add it to the map of spawner created mobs!
+		if(event.getSpawnReason().toString().equalsIgnoreCase("SPAWNER")) {
+			plugin.spawnerMap.put(event.getEntity().getUniqueId(), true);
 		}
 	}
 }

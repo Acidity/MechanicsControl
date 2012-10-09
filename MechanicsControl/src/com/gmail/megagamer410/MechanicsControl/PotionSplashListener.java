@@ -25,38 +25,32 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.potion.PotionEffect;
 
-public class PotionSplashListener implements Listener 
-{
+public class PotionSplashListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
 	
-	static MechanicsControl Plugin;
+	private MechanicsControl plugin;
 	
 	/**
 	 * Passes the MechanicsControl instance for static methods.
 	 * @param plugin MechanicsControl plugin being passed in.
 	 */
 	
-	public PotionSplashListener(MechanicsControl plugin) 
-	{
-		Plugin = plugin;
+	public PotionSplashListener(MechanicsControl plugin) {
+		this.plugin = plugin;
 	}
 	
 	@EventHandler
-	public void onPotionSplash(PotionSplashEvent event)
-	{
-		PotionEffect[] potions = new PotionEffect[10];
-		potions = event.getPotion().getEffects().toArray(potions);
-		
-		if(event.getPotion().getEffects().size() > 0)
-		{
-			for(int x = 0; x < event.getPotion().getEffects().size(); x++)
-			{
-				if(Plugin.getConfig().getBoolean("Potions."+potions[x].getType().getName()))
-				{
-					event.setCancelled(true);
-				}
+	public void onPotionSplash(PotionSplashEvent event) {
+		//If player doesn't have any potion effects
+		if(event.getPotion().getEffects().size() <= 0) {
+			return;
+		}
+		//iterates through all potion effects and cancels them if config says to.
+		for(PotionEffect x : event.getPotion().getEffects()) {
+			if(plugin.getConfig().getBoolean("Potions."+x.getType().getName())) {
+				event.setCancelled(true);
 			}
 		}
 	}
