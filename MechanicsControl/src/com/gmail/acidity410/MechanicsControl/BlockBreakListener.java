@@ -18,48 +18,41 @@
     along with MechanicsControl.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.gmail.megagamer410.MechanicsControl;
+package com.gmail.acidity410.MechanicsControl;
 
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.BrewEvent;
+import org.bukkit.event.block.BlockBreakEvent;
 
-public class BrewListener implements Listener {
+public class BlockBreakListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
-
+	
 	private MechanicsControl plugin;
-
+	
 	/**
-	 * Passes the MechanicsControl instance for static methods.
-	 * 
-	 * @param plugin MechanicsControl plugin being passed in.
+	 * Passes the ChaosMod instance for static methods.
+	 * @param plugin ChaosMod plugin being passed in.
 	 */
-
-	public BrewListener(MechanicsControl plugin) {
+	
+	public BlockBreakListener(MechanicsControl plugin) {
 		this.plugin = plugin;
 	}
-
+	
 	@EventHandler
-	public void onPotionBrew(BrewEvent event) {
-		// If the config says not to block potions, don't do anything.
-		if (!plugin.getConfig().getBoolean("Potions.BlockBrewing")) {
+	public void onBlockBreak(BlockBreakEvent event) {
+		//If the block is not in the config, return
+		if (!plugin.getConfig().getConfigurationSection("XP").getKeys(false).contains(event.getBlock().getType().toString())) {
 			return;
 		}
-		// If the config says not to block this potion, don't do anything.
-		if (!plugin.getConfig().getBoolean("Potions." + event.getContents().getIngredient().getType().name())) {
+		//If the amount of XP matches the bukkit default return
+		if (plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()) == event.getExpToDrop()) {
 			return;
 		}
-
-		event.setCancelled(true);
-		// Tells everyone looking at the breqing stand that the admin blocked this potion.
-		if (event.getContents().getViewers() != null) {
-			for (HumanEntity x : event.getContents().getViewers()) {
-				((Player) x).sendMessage("This ingredient has been blocked by your server admin.");
-			}
+		//If XP is supposed to drop OR if the config specifies it should always apply
+		if (event.getExpToDrop() != 0 || plugin.getConfig().getBoolean("XP."+event.getBlock().getType().toString()+"FORCE",false)) {
+			event.setExpToDrop(plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()));
 		}
 	}
 }

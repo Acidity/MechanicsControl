@@ -18,13 +18,13 @@
     along with MechanicsControl.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.gmail.megagamer410.MechanicsControl;
+package com.gmail.acidity410.MechanicsControl;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 
-public class BlockBreakListener implements Listener {
+public class CreatureSpawnListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
@@ -32,27 +32,19 @@ public class BlockBreakListener implements Listener {
 	private MechanicsControl plugin;
 	
 	/**
-	 * Passes the ChaosMod instance for static methods.
-	 * @param plugin ChaosMod plugin being passed in.
+	 * Passes the MechanicsControl instance for static methods.
+	 * @param plugin MechanicsControl plugin being passed in.
 	 */
 	
-	public BlockBreakListener(MechanicsControl plugin) {
+	public CreatureSpawnListener(MechanicsControl plugin) {
 		this.plugin = plugin;
 	}
 	
 	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event) {
-		//If the block is not in the config, return
-		if (!plugin.getConfig().getConfigurationSection("XP").getKeys(false).contains(event.getBlock().getType().toString())) {
-			return;
-		}
-		//If the amount of XP matches the bukkit default return
-		if (plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()) == event.getExpToDrop()) {
-			return;
-		}
-		//If XP is supposed to drop OR if the config specifies it should always apply
-		if (event.getExpToDrop() != 0 || plugin.getConfig().getBoolean("XP."+event.getBlock().getType().toString()+"FORCE",false)) {
-			event.setExpToDrop(plugin.getConfig().getInt("XP."+ event.getBlock().getType().toString()));
+	public void onCreatureSpawn(CreatureSpawnEvent event) {
+		// If the mob was spawned by a mob spawner, add it to the map of spawner created mobs!
+		if(event.getSpawnReason().toString().equalsIgnoreCase("SPAWNER")) {
+			plugin.spawnerMap.put(event.getEntity().getUniqueId(), true);
 		}
 	}
 }

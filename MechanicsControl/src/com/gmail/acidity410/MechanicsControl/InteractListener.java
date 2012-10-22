@@ -18,7 +18,7 @@
     along with MechanicsControl.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.gmail.megagamer410.MechanicsControl;
+package com.gmail.acidity410.MechanicsControl;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;

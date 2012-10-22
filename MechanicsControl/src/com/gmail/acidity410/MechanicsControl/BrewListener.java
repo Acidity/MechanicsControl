@@ -18,45 +18,47 @@
     along with MechanicsControl.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.gmail.megagamer410.MechanicsControl;
+package com.gmail.acidity410.MechanicsControl;
 
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.inventory.BrewEvent;
 
-public class EnchantListener implements Listener {
-
+public class BrewListener implements Listener {
 	/**
 	 * Necessary to get the server on static methods.
 	 */
-	
+
 	private MechanicsControl plugin;
-	
+
 	/**
 	 * Passes the MechanicsControl instance for static methods.
+	 * 
 	 * @param plugin MechanicsControl plugin being passed in.
 	 */
-	
-	public EnchantListener(MechanicsControl plugin) {
+
+	public BrewListener(MechanicsControl plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	@EventHandler
-	public void onEnchant(EnchantItemEvent event) {
-		//Makes sure that the blocking enchants has been enabled in the config.
-		if(!plugin.getConfig().getBoolean("Enchants.BlockEnchants")) {
+	public void onPotionBrew(BrewEvent event) {
+		// If the config says not to block potions, don't do anything.
+		if (!plugin.getConfig().getBoolean("Potions.BlockBrewing")) {
 			return;
 		}
-		
-		//Checks all assigned enchants for being blocked and removes them as necessary
-		for(Enchantment x : event.getEnchantsToAdd().keySet()) {
-			if(plugin.getConfig().getIntegerList("Enchants." + x.getName()).contains(event.getEnchantsToAdd().get(x))) {
-				event.getEnchantsToAdd().remove(x);
-				//If there are no allowed enchantments, cancel the event so the palyer doesn't lose levels
-				if(event.getEnchantsToAdd().size() == 0) {
-					event.setCancelled(true);
-				}
+		// If the config says not to block this potion, don't do anything.
+		if (!plugin.getConfig().getBoolean("Potions." + event.getContents().getIngredient().getType().name())) {
+			return;
+		}
+
+		event.setCancelled(true);
+		// Tells everyone looking at the breqing stand that the admin blocked this potion.
+		if (event.getContents().getViewers() != null) {
+			for (HumanEntity x : event.getContents().getViewers()) {
+				((Player) x).sendMessage("This ingredient has been blocked by your server admin.");
 			}
 		}
 	}

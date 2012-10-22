@@ -18,13 +18,15 @@
     along with MechanicsControl.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.gmail.megagamer410.MechanicsControl;
+package com.gmail.acidity410.MechanicsControl;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 
-public class CreatureSpawnListener implements Listener {
+public class EnchantListener implements Listener {
+
 	/**
 	 * Necessary to get the server on static methods.
 	 */
@@ -36,15 +38,26 @@ public class CreatureSpawnListener implements Listener {
 	 * @param plugin MechanicsControl plugin being passed in.
 	 */
 	
-	public CreatureSpawnListener(MechanicsControl plugin) {
+	public EnchantListener(MechanicsControl plugin) {
 		this.plugin = plugin;
 	}
 	
 	@EventHandler
-	public void onCreatureSpawn(CreatureSpawnEvent event) {
-		// If the mob was spawned by a mob spawner, add it to the map of spawner created mobs!
-		if(event.getSpawnReason().toString().equalsIgnoreCase("SPAWNER")) {
-			plugin.spawnerMap.put(event.getEntity().getUniqueId(), true);
+	public void onEnchant(EnchantItemEvent event) {
+		//Makes sure that the blocking enchants has been enabled in the config.
+		if(!plugin.getConfig().getBoolean("Enchants.BlockEnchants")) {
+			return;
+		}
+		
+		//Checks all assigned enchants for being blocked and removes them as necessary
+		for(Enchantment x : event.getEnchantsToAdd().keySet()) {
+			if(plugin.getConfig().getIntegerList("Enchants." + x.getName()).contains(event.getEnchantsToAdd().get(x))) {
+				event.getEnchantsToAdd().remove(x);
+				//If there are no allowed enchantments, cancel the event so the palyer doesn't lose levels
+				if(event.getEnchantsToAdd().size() == 0) {
+					event.setCancelled(true);
+				}
+			}
 		}
 	}
 }
