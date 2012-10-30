@@ -1,0 +1,103 @@
+Enchants:
+    
+    # Set to true if you want CM to block certain enchants.
+    BlockEnchants: true
+    
+    # Blocks all levels of the given enchant specified.
+    # 6 = All levels blocked, 0 = No levels blocked
+    # List of viable enchants:
+    # http://jd.bukkit.org/apidocs/org/bukkit/enchantments/Enchantment.html
+    
+    ARROW_DAMAGE: [2,3,4,5]
+    ARROW_FIRE: [2,3,4,5]
+    ARROW_INFINITE: [2,3,4,5]
+    ARROW_KNOCKBACK: [2,3,4,5]
+    DAMAGE_ALL: [2,3,4,5]
+    DAMAGE_ARTHROPODS: 0
+    DAMAGE_UNDEAD: 0
+    DIG_SPEED: 0
+    DURABILITY: 0
+    FIRE_ASPECT: [2,3,4,5]
+    KNOCKBACK: [2,3,4,5]
+    LOOT_BONUS_BLOCKS: 0
+    LOOT_BONUS_MOBS: 0
+    OXYGEN: 0
+    PROTECTION_ENVIRONMENTAL: [2,3,4,5]
+    PROTECTION_EXPLOSIONS: [2,3,4,5]
+    PROTECTION_FALL: [2,3,4,5]
+    PROTECTION_FIRE: [2,3,4,5]
+    PROTECTION_PROJECTILE: [2,3,4,5]
+    SILK_TOUCH: 0
+    WATER_WORKER: 0
+    
+Potions:
+    
+    # Set to true if you want to block players from using certain ingredients when brewing
+    BlockBrewing: false
+    
+    # Set to true if you want this to be blocked
+    NETHER_WARTS: false
+    GLOWSTONE_DUST: false
+    REDSTONE: false
+    FERMENTED_SPIDER_EYE: false
+    MAGMA_CREAM: false
+    SUGAR: false
+    SPECKLED_MELON: false
+    SPIDER_EYE: false
+    GHAST_TEAR: false
+    BLAZE_POWDER: false
+    
+    # Set to true if you want to block players from using certain effects.
+    BlockEffects: false
+    
+    SPEED: false
+    SLOW: false
+    FAST_DIGGING: false
+    SLOW_DIGGING: false
+    INCREASE_DAMAGE: false
+    HEAL: false
+    HARM: false
+    JUMP: false
+    CONFUSION: false
+    REGENERATION: false
+    DAMAGE_RESISTANCE: false
+    FIRE_RESISTANCE: false
+    WATER_BREATHING: false
+    BLINDNESS: false
+    HUNGER: false
+    WEAKNESS: false
+    POISON: false
+
+XP:
+    
+    # Set the amount of XP you want each block to drop upon breaking.
+    
+    # Set the amount of XP you want each entity to drop upon death.
+  #  CREEPER: 
+  #  SKELETON: 
+  #  SPIDER: 
+  #  GIANT: 
+  #  ZOMBIE: 
+  #  SLIME: 
+  #  GHAST: 
+  #  PIG_ZOMBIE: 
+  #  ENDERMAN: 
+  #  CAVE_SPIDER: 
+  #  SILVERFISH: 
+  #  BLAZE: 
+  #  MAGMA_CUBE: 
+  #  ENDER_DRAGON: 
+  #  PIG: 
+  #  SHEEP: 
+  #  COW: 
+  #  CHICKEN: 
+  #  SQUID: 
+  #  WOLF: 
+  #  MUSHROOM_COW: 
+  #  SNOWMAN: 
+  #  OCELOT: 
+  #  IRON_GOLEM: 
+  #  VILLAGER: 
+  
+  # Prevent mobs from mob spawners from dropping XP.
+  MobSpawnerBlock: false

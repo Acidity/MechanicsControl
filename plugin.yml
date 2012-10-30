@@ -1,0 +1,5 @@
+name: MechanicsControl
+main: com.gmail.megagamer410.MechanicsControl.MechanicsControl
+version: 1.0.0
+author: megagamer410
+description: Allows Server admins control over XP, potions, and enchantments.
